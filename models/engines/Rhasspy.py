@@ -42,11 +42,19 @@ class Rhasspy:
 				conf = json.load(confFile)
 
 				try:
-					configs['mqttServer'] = conf['mqtt']['host']
-					configs['mqttPort'] = conf['mqtt'].get('port', 1883)
-					configs['mqttUsername'] = conf['mqtt'].get('username', '')
-					configs['mqttPassword'] = conf['mqtt'].get('password', '')
-					configs['mqttTLSCAFile'] = ''
+					if conf['mqtt']['enabled']:
+						configs['mqttServer'] = conf['mqtt'].get('host','localhost')
+						configs['mqttPort'] = conf['mqtt'].get('port', 1883)
+						configs['mqttUsername'] = conf['mqtt'].get('username', '')
+						configs['mqttPassword'] = conf['mqtt'].get('password', '')
+						configs['mqttTLSCAFile'] = ''
+					else:
+						configs['mqttServer'] = 'localhost'
+						configs['mqttPort'] = 12183
+						configs['mqttUsername'] = ''
+						configs['mqttPassword'] = ''
+						configs['mqttTLSCAFile'] = ''
+					
 					siteId = conf['mqtt'].get('site_id', 'default')
 					configs['deviceName'] = siteId.split(',')[0]
 
